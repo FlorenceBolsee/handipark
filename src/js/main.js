@@ -43,6 +43,36 @@ var markersList = [];
 
 var i;
 
+var clusterStyles = [
+  {
+    textColor: 'white',
+    url: 'http://www.icon100.com/up/4025/128/Group-Cluster-128.png',
+    height: 128,
+    width: 128,
+    backgroundPosition: 'center center'
+  },
+  {
+    textColor: 'white',
+    url: 'http://www.icon100.com/up/4025/128/Group-Cluster-128.png',
+    height: 128,
+    width: 128,
+    backgroundPosition: 'center center'
+  },
+  {
+    textColor: 'white',
+    url: 'http://www.icon100.com/up/4025/128/Group-Cluster-128.png',
+    height: 128,
+    width: 128,
+    backgroundPosition: 'center center'
+  }
+]
+
+var mcOptions = {
+  gridSize: 50,
+  styles: clusterStyles,
+  maxZoom: 15
+};
+
 var markersAjaxCall = new Vue({
   el: 'main',
   mounted(){
@@ -60,8 +90,7 @@ var markersAjaxCall = new Vue({
         createMarker(markerPos, roundMarker);
       }
       console.log(markers);
-      var markerCluster = new MarkerClusterer(map, markers,
-        {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+      var markerCluster = new MarkerClusterer(map, markers, mcOptions);
 
     })
     .catch(() => {
