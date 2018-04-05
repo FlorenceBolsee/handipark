@@ -13,6 +13,8 @@ var markerPos = {
 
 var marker;
 
+var markers = [];
+
 var map;
 
 function initMap() {
@@ -34,31 +36,38 @@ function createMarker(latlng, name){
     map: map,
     icon: name
   });
+  markers.push(marker);
 }
 
 var markersList = [];
 
-var markersAjaxCall = $.getJSON("https://handikapapp.azurewebsites.net/api/RData", function() {
-  console.log( "success" );
-})
-  .done(function(data) {
-    markersList = data;
-    initMap();
-    $.each(markersList, function(){
-      if(this.Available){
-        roundMarker.fillColor = 'limegreen';
-      }
-      markerPos.lat = parseFloat(this.Latitude);
-      markerPos.lng = parseFloat(this.Longitude);
+var i;
 
-      createMarker(markerPos, roundMarker);
-    });
-  })
-  .fail(function() {
-    console.log( "fail" );
-  })
-  .always(function() {
-    console.log( "complete" );
-  });
+var markersAjaxCall = new Vue({
+  el: 'main',
+  mounted(){
+  	axios.get("https://handikapapp.azurewebsites.net/api/RData")
+    .then(response => {
+      markersList = response.data;
+      initMap();
+      for (i = 0; i < markersList.length; i++){
+        if(markersList[i].Available){
+          roundMarker.fillColor = 'limegreen';
+        }
+        markerPos.lat = parseFloat(markersList[i].Latitude);
+        markerPos.lng = parseFloat(markersList[i].Longitude);
+          
+        createMarker(markerPos, roundMarker);
+      }
+      console.log(markers);
+      var markerCluster = new MarkerClusterer(map, markers,
+        {imagePath: 'https://developers.google.com/maps/documentation/javascript/examples/markerclusterer/m'});
+
+    })
+    .catch(() => {
+    	alert("error");
+    })
+  }
+});
 
 
