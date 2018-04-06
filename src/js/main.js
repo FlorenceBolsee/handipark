@@ -98,8 +98,12 @@ var markersAjaxCall = new Vue({
       console.log(markersList);
       initMap();
       for (i = 0; i < markersList.length; i++){
-        if(markersList[i].Available){
+        if(markersList[i].Available === 0){
+          console.log('not available');
           roundMarker.fillColor = 'limegreen';
+        } else {
+          console.log('available');
+          roundMarker.fillColor = 'tomato';
         }
         markerPos.lat = parseFloat(markersList[i].Latitude);
         markerPos.lng = parseFloat(markersList[i].Longitude);
@@ -119,11 +123,11 @@ var markersAjaxCall = new Vue({
 var form = new Vue({
   el: '#form',
   data: {
-    search: '',
+    search: 'Complexe Sportif Poseidon',
     latitude: '',
     longitude: '',
     active: true,
-    message: 'Complexe Sportif Poseidon'
+    message: ''
   },
   watch: {
     search: function() {
