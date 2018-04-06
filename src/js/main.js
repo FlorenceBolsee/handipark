@@ -17,6 +17,8 @@ var markers = [];
 
 var map;
 
+var z;
+
 function initMap() {
     var center = {
       lat: 50.8469571,
@@ -27,7 +29,10 @@ function initMap() {
       center: center,
       gestureHandling: 'cooperative',
     });
-    var infowindow = new google.maps.InfoWindow();
+    google.maps.event.addListener(map, 'zoom_changed', function() {
+      z = map.getZoom();
+      console.log(z);
+  });
 }
 
 function createMarker(latlng, name){
@@ -37,6 +42,14 @@ function createMarker(latlng, name){
     icon: name
   });
   markers.push(marker);
+  marker.addListener('click', function() {
+    if(z == 15){
+      map.setZoom(12);
+    } else {
+      map.setZoom(15);
+    }
+    map.setCenter(marker.getPosition());
+  });
 }
 
 var markersList = [];
